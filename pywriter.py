@@ -3,8 +3,22 @@ import random
 import argparse
 import sys
 import os
-from pynput.keyboard import Key, Controller
-from pynput import keyboard as k
+import subprocess
+
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+try: 
+    from pynput.keyboard import Key, Controller
+    from pynput import keyboard as k
+except ImportError:
+    try:
+        install("pynput")
+        from pynput.keyboard import Key, Controller
+        from pynput import keyboard as k
+    except:
+        raise
+        sys.exit(0)
 
 
 def on_press(key):
@@ -30,19 +44,24 @@ parser.add_argument("--file", "-f", type=str, required=False)
 parser.add_argument("--timeout", "-t", type=int, required=False)
 parser.add_argument("--maxtime", "-M", type=int, required=False)
 parser.add_argument("--mintime", "-m", type=int, required=False)
+parser.add_argument("--raw", "-r", type=bool, required=False)
+
 args = parser.parse_args()
+
 _file = args.file if args.file != None else sys.argv[0]
 _timeout = args.timeout if args.timeout != None else 5
 _maxtime = args.maxtime if args.maxtime != None else 150
 _mintime = args.mintime if args.mintime != None and args.mintime <= _maxtime else 50
+_raw = args.raw if args.raw != None else False
 
 time.sleep(_timeout)
 with open(_file) as _input:
     for line in _input:
         for char in line:
             if char == '\n':
-                keyboard.press(Key.esc)
-                keyboard.release(Key.esc)
+                if not _raw:
+                    keyboard.press(Key.esc)
+                    keyboard.release(Key.esc)
                 keyboard.press(Key.enter)
                 keyboard.release(Key.enter)
                 keyboard.press(Key.home)
