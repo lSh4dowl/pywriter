@@ -17,7 +17,8 @@ Flag | Value Type | Standard Value | Description
 -t/--timeout | int | 5 | Timeout before the program starts typing in seconds.
 -m/--mintime | int | 50 | Minimal time between keystrokes in seconds/1000.
 -M/--maxtime | int | 150 | Maximal time between keystrokes in seconds/1000.
--r/--raw | bool | False | If this flag is set to true, the script will type the text out in raw form, instead of trying to fight editor autocomplete on newline.
+-r/--raw | optional | False | If this flag is set, the script will type the text out in raw form, instead of trying to fight editor autocomplete on newline.
+-l/--license | optional | False | If this flag is set, the program will print out the licenses and libs used and then exit.
 
 ## Credit:
 Credit goes to moses-palmer. Their Library https://github.com/moses-palmer/pynput is used in this project.
